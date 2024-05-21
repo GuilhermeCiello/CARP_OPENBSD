@@ -47,10 +47,10 @@ Adaptador 2: conectado a rede interna(internal_net)
 Adaptador 3: conectado a rede interna(pfsync)
 
 Comandos usados na máquina virtual "OpenBSD_fw0"
-
+```
 openbsdfw0# vi /etc/hostname.em0
 inet 50.50.50.10 255.255.255.0 #Configura a interface em0 com o endereço IP 50.50.50.10 e máscara de rede 255.255.255.0
-
+```
 openbsdfw0# vi /etc/hostname.em1
 inet 192.168.10.10 255.255.255.0 #Configura a interface em1 com o endereço IP 192.168.10.10 e máscara de rede 255.255.255.0
 
