@@ -59,7 +59,7 @@ inet 10.20.30.10 255.255.255.0 #Configura a interface em2 com o endereço IP 10.
 ```
 ```
 openbsdfw0# vi /etc/hostname.carp1
-inet 50.50.50.11 255.255.255.0 50.50.50.255 vhid 1 advbase 10 advskew 0 pass carppass carpdev em0
+inet 50.50.50.11 255.255.255.0 50.50.50.255 vhid 1 advbase 20 advskew 0 pass carppass carpdev em0
 
 #Configura a interface carp1 com o endereço IP virtual 50.50.50.11
 #vhid 1: Identificador Virtual Host ID, unico entre interfaces CARP na mesma rede
@@ -179,4 +179,23 @@ pass log on $CarpSyncIf inet proto pfsync keep state
 pass log on { $ExtIf, $IntIf } inet proto carp from { $ExtIP, $IntIP } to any keep state
 block in quick on { $ExtIf, $IntIf } from any to $CarpExtIP
 block in quick on { $ExtIf, $IntIf } from any to $CarpIntIP
+```
+Após a realização destes comandos, a máquina virtual OpenBSD_fw0 deve possuir o CARP com o status de "MASTER"
+
+```
+carp1: flags=8843<UP, BROADCAST, RUNNING, SIMPLEX, MULTICAST> mtu 1500
+1laddr 00:00:5e:00:01:01
+index 6 priority 15 11prio 3
+carp: MASTER carpdev emo vhid 1 adubase 20 aduskew 0
+groups: carp
+status: master
+inet 50.50.50.11 netmask 0xffffff00 broadcast 50.50.50.255
+carp2: flags=8843<UP, BROADCAST, RUNNING, SIMPLEX, MULTICAST> mtu 1500
+1laddr 00:00:5e:00:01:02
+index 7 priority 15 11prio 3
+carp: MASTER carpdev emi vhid 2 adubase 20 aduskew 0
+groups: carp
+status: master
+inet 192.168.10.11 netmask 0xffffff00 broadcast 192.168.10.255
+
 ```
