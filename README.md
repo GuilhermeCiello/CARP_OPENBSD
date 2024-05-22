@@ -1,5 +1,7 @@
-# CARP_OPENBSD
+# FAILOVER CARP OPENBSD
 O OpenBSD é um sistema operacional baseado em UNIX, conhecido por sua segurança, padronização e consistência. Uma de suas características distintivas é o uso do Common Address Redundancy Protocol (CARP) para configuração de failover de firewall, garantindo alta disponibilidade e segurança.
+
+O protocolo CARP, sigla para Common Address Redundancy Protocol serve para aumentar a disponibilidade de um serviço ao compartilhar um endereço IP único entre vários servidores em um mesmo segmento de rede. Pode ser usado em servidores, roteadores e  firewalls.
 
 **Firewall de Failover com CARP**
 
@@ -23,7 +25,7 @@ As máquinas virtuais (VMs) do OpenBSD possuem três placas de rede virtuais (em
 **Funcionamento**
 
 Configuração de dois firewalls: "OpenBSD_fw0" como master e "OpenBSD_fw1" como backup. O fw0 está ativo, enquanto o fw1 fica inativo, acionado apenas se o master falhar.
-
+Para sincronizar estados de conexão de múltiplos firewalls que utilizam o Packet Filter (PF) é necessário a utilização da interface virtual pfsync0
 **Passos para Configuração**
 
 1. Faça o download da ISO do OpenBSD 6.6 na página oficial: [OpenBSD Download](https://www.openbsd.org/faq/faq4.html#Download).
@@ -79,7 +81,7 @@ inet 192.168.10.11 255.255.255.0 50.50.50.255 vhid 2 advbase 20 advskew 0 pass c
 ```
 ```
 openbsdfw0# vi /etc/hostname.pfsync0
-up syncdev em2
+up syncdev em2 # configura a interface pfsync0 para usar uma interface de sincronização dedicada
 ```
 ```
 openbsdfw0# vi /etc/sysctl.conf
@@ -93,7 +95,7 @@ pf=YES
 pf_rules=/etc/pf.conf
 ```
 ```
-openbsdfw0# chmod +x /etc/netstart
+openbsdfw0# chmod +x /etc/netstart 
 ```
 ```
 openbsdfw0# /etc/netstart
@@ -135,7 +137,7 @@ inet 192.168.10.11 255.255.255.0 50.50.50.255 vhid 2 advbase 20 advskew 10 pass 
 ```
 ```
 openbsdfw1# vi /etc/hostname.pfsync0
-up syncdev em2
+up syncdev em2 # configura a interface pfsync0 para usar uma interface de sincronização dedicada
 ```
 ```
 openbsdfw1# vi /etc/sysctl.conf
@@ -156,7 +158,10 @@ openbsdfw1# /etc/netstart
 ```
 
 Criação das regras no Packet Filter(PF)
+Estas regras são configuradas nas duas VM's 
 ```
+vi /etc/pf.conf
+
 # Definição de Variáveis e Interfaces
 ExtIf="em0"
 IntIf="em1"
