@@ -1,7 +1,10 @@
 # Failover de Firewall com CARP
 O OpenBSD é um sistema operacional baseado em UNIX, conhecido por sua segurança, padronização e consistência. Uma de suas características distintivas é o uso do Common Address Redundancy Protocol (CARP) para configuração de failover de firewall, garantindo alta disponibilidade e segurança.
 
-O protocolo CARP, sigla para Common Address Redundancy Protocol serve para aumentar a disponibilidade de um serviço ao compartilhar um endereço IP único entre vários servidores em um mesmo segmento de rede. Pode ser usado em servidores, roteadores e  firewalls.
+O protocolo CARP, onde a sigla é Common Address Redundancy Protocol opera na terceira camada do modelo OSI, pode ser utilizado em um grupo de servidores em um mesmo segmento de rede compartilhando um endereço IP único do servidor Master, em roteadores para que o tráfego de rede continue caso algum roteador falhe, firewalls  garantindo a segurança da rede caso um dispositivo de problema. A sua utilidade é aumentar a disponibilidade de um serviço fazendo assim a garantia de que caso haja um esgotamento de recurso de hardware ou também uma quebra no serviço master, um servidor backup irá se restabelecer, fazendo assim com que exista uma garantia de alta disponibilidade de forma transparente. 
+
+O CARP utiliza a técnica de um endereço IP virtual que circula entre vários nós CARP. Há um nó principal e um ou mais nós escravos na configuração normal. O nó principal sempre responderá às solicitações para o endereço IP virtual. 
+Os nós escravos descartarão essas solicitações, eles só precisam descobrir quando o nó principal não está disponível e um deles deve assumir a função de nó principal sempre que isso acontecer. Para cada configuração, você precisa de um ID de host virtual, um endereço IP virtual e um endereço de hardware virtual. A forma do endereço de hardware virtual depende do tipo de camada de hardware e é criada automaticamente pelo CARP.
 
 **Firewall de Failover com CARP**
 
